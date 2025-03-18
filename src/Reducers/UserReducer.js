@@ -1,14 +1,14 @@
 import Api from "../Common/api";
-import SmartItApi from "../Common/SmartItApi";
 import { call, put, select, takeEvery } from "redux-saga/effects";
 import { Actions } from "../Common/constants";
-import getLocaleData from "../i18n/_locale";
+import { ACTIONS as ViewActions } from "./ViewReducer";
 
 const initialState = {
   sidebarShow: "responsive",
   user: {},
   computerNames: [],
-  token: "",
+  token: null,
+  isAuthenticated: false, // 初始为 false
   installed: [],
   total: 0,
   pageNum: 1,
@@ -18,220 +18,127 @@ const initialState = {
   rPageNum: 1,
   rPageSize: 10,
   permissionIds: [],
+  isLoading: false, // 新增加载状态
+  role: '',
+  userKey: '',
+};
+
+export const ACTIONS = {
+  SET_LOGIN_USER_KEY: "SET_LOGIN_USER_KEY",
+  GET_LOGIN_USER_KEY: "GET_LOGIN_USER_KEY",
+  SET_USER: "SET_USER",
+  GET_USER: "GET_USER",
+  STORE_USER: "STORE_USER",
+  SET_ROLE: "SET_ROLE",
+  GET_USER_KEY: 'GET_USER_KEY',
 };
 
 const UserReducer = (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
-    case Actions.SET_USER:
-      return { ...state, ...payload };
-    case Actions.STORE_USER:
-      return { ...state, ...payload };
+    case ACTIONS.SET_ROLE:
+      return {
+        ...state,
+        role: payload.role,
+        // role : ["IT_ADMIN"]
+        // role : ["ADMIN"]
+        // role : ["GENERAL"]
+      };
+    case ACTIONS.SET_LOGIN_USER_KEY:
+      return {
+        ...state,
+        // userKey: payload?.data || '',
+        userKey:'123'
+      };
+    case ACTIONS.SET_USER:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          ...payload.user
+        },
+        isAuthenticated: !!payload.user, // 确保状态一致
+      };
+    case ACTIONS.STORE_USER:
+      return {
+        ...state,
+        isAuthenticated: !!action.payload,
+        token: action.payload.token,
+      };
+    case Actions.SET_IS_LOADING:
+      return { ...state, isLoading: payload };
+    case Actions.SET_SAM_FUNCTION_LIST:
+      return { ...state, user: { ...state.user, userFunctions: payload.list } };
+    case Actions.SET_PERMISSIONS:
+      return { ...state, permissionIds: Array.isArray(payload) ? payload : [] }; // 确保为数组
+    case Actions.SET_INSTALLED_APPS:
+      return {
+        ...state,
+        installed: payload.installed || [],
+        total: payload.total || 0,
+        pageNum: payload.pageNum || 1,
+        pageSize: payload.pageSize || 10,
+      };
+    case Actions.SET_REQUEST_LIST:
+      return {
+        ...state,
+        request: payload.request || [],
+        rTotal: payload.rTotal || 0,
+        rPageNum: payload.rPageNum || 1,
+        rPageSize: payload.rPageSize || 10,
+      };
     default:
       return state;
   }
 };
 
 function* getUser() {
-  yield put({
-    type: Actions.SET_IS_LOADING,
-    payload: true,
-  });
-  const res = yield call(Api.getCurrentUser);
-  if (!res?.data || res.data?.code === -1) {
-    console.log(
-      "response.data.code:" +
-        res.data.code +
-        ", response.data.message" +
-        res.data.message
-    );
+  yield put({ type: Actions.SET_IS_LOADING, payload: true });
+  try {
+    const res = yield call(Api.getCurrentUser);
+    if (!res.data) {
+      console.error(`Error fetching user: ${res.data.message}`);
+      return;
+    }
+    const userData = res.data.user;
+    const userRoles = res.data.roleCodes;
+    yield put({ type: ACTIONS.SET_USER, payload: { user: userData } });
+    yield put({ type: ACTIONS.SET_ROLE, payload: { role: userRoles } });
+  } catch (error) {
+    console.error("Error in getUser saga:", error);
+  } finally {
+    yield put({ type: Actions.SET_IS_LOADING, payload: false });
   }
+}
 
-  yield put({
-    type: Actions.SET_USER,
-    payload: {
-      user: res?.data.data,
-    },
-  });
-
-  yield put({
-    type: Actions.SET_SAM_FUNCTION_LIST,
-    payload: {
-      list: res?.data.data.userFunctions,
-    },
-  });
-
-  let roleres = yield call(Api.queryPermissionFunction);
-
-  if (roleres.data.data) {
+// 获取用户 Key
+function* getLoginUserKey(action) {
+  yield put({ type: ViewActions.SET_IS_LOADING, payload: true });
+  try {
+    let { payload } = action
+    const res = yield call(Api.getPermissionUserKey, payload);
+    if (action.resolve) action.resolve(res);
+    if (res.length < 0) {
+      console.error(`Error fetching getUserKey: list length is 0`);
+      return;
+    }
     yield put({
-      type: Actions.SET_PERMISSIONS,
-      payload: roleres.data.data,
-    });
-  }
-
-  let res2 = yield call(Api.queryPermissionRole);
-  if (res2.data.data) {
-    yield put({
-      type: Actions.SET_USER,
+      type: ACTIONS.SET_LOGIN_USER_KEY,
       payload: {
-        permissionIds: res2.data.data.map((el) => el.roleId),
+        data: res.data,
       },
     });
-  }
-
-  yield put({
-    type: Actions.SET_IS_LOADING,
-    payload: false,
-  });
-
-  let sccmRes = yield call(SmartItApi.getSystemsbyLastLoggedUser, {
-    UserNtAccount: res.data.data.userId,
-  });
-
-  if (sccmRes && sccmRes.data) {
-    let computerNames = sccmRes.data.data.map((el) => {
-      return el.hostname;
-    });
-
-    yield put({
-      type: Actions.SET_USER,
-      payload: {
-        computerNames,
-      },
-    });
+  } catch (error) {
+    if (action.reject) action.reject(error);
+    console.error("Error in getUserKey saga:", error);
+  } finally {
+    yield put({ type: ViewActions.SET_IS_LOADING, payload: false });
   }
 }
 
-function* getAppList({ payload }) {
-  yield put({
-    type: Actions.SET_IS_LOADING,
-    payload: true,
-  });
-  let { pageNum, pageSize, sourceSystem } = payload;
-  let res = yield call(Api.getAllInstalled, {
-    pageNum,
-    pageSize,
-    sourceSystem,
-  });
-
-  yield put({
-    type: Actions.SET_USER,
-    payload: {
-      installed: res.data.data.list,
-      total: res.data.data.total,
-      pageNum: res.data.data.pageNum,
-      pageSize: res.data.data.pageSize,
-    },
-  });
-  yield put({
-    type: Actions.SET_IS_LOADING,
-    payload: false,
-  });
-}
-
-function* getRequestList({ payload }) {
-  yield put({
-    type: Actions.SET_IS_LOADING,
-    payload: true,
-  });
-  let { pageNum, pageSize, applicant, applicantId, formStatus, formType } =
-    payload;
-  if (!applicantId) {
-    applicantId = yield select((state) => state.user.userId);
-  }
-  let res = yield call(Api.getAllRequests, {
-    pageNum,
-    pageSize,
-    applicant,
-    applicantId,
-    formStatus,
-    formType,
-  });
-
-  yield put({
-    type: Actions.SET_USER,
-    payload: {
-      request: res.data.data.list,
-      rTotal: res.data.data.total,
-      rPageNum: res.data.data.pageNum,
-      rPageSize: res.data.data.pageSize,
-    },
-  });
-  yield put({
-    type: Actions.SET_IS_LOADING,
-    payload: false,
-  });
-}
-
-function* sendUninstallApplication({ payload }) {
-  yield put({
-    type: Actions.SET_IS_LOADING,
-    payload: true,
-  });
-  let { reasons, selected } = payload;
-
-  let { empCode, userId } = yield select((state) => state.user.user);
-  let currentLocale = yield select((state) => state.view.currentLocale);
-  // let request = yield select(state => state.user.request)
-
-  if (!empCode || !selected) {
-    return;
-  }
-
-  let params = {
-    empCode,
-    applicant: userId,
-    language: currentLocale,
-    reason: reasons,
-    items: [],
-  };
-
-  selected.forEach((e) => {
-    let item = {
-      assetId: e.assetId,
-      catId: e.catId,
-      sourceId: e.sourceId,
-      sourceSystemId: e.sourceSystemId,
-      empCode,
-      computerName: e.applyComputer,
-    };
-    params.items.push(item);
-  });
-
-  let res = yield call(Api.sendUninstallRequest, params);
-
-  if (res.data && res.data.code !== 0) {
-    const messages = getLocaleData(currentLocale);
-    yield put({
-      type: Actions.SHOW_ALERT_MESSAGE,
-      payload: {
-        show: true,
-        props: {
-          title: messages["common.title"],
-          message: res.data.message,
-          hasCancel: false,
-          callback: () => null,
-        },
-      },
-    });
-  } else {
-    yield put({
-      type: Actions.GO_TO_PAGE,
-      payload: "/myrequest",
-    });
-  }
-  yield put({
-    type: Actions.SET_IS_LOADING,
-    payload: false,
-  });
-}
-
-const UserSaga = [
-  takeEvery("getUser", getUser),
-  takeEvery("getAppList", getAppList),
-  takeEvery("getRequestList", getRequestList),
-  takeEvery("sendUninstallApplication", sendUninstallApplication),
-];
+const UserSaga = function* () {
+  yield takeEvery(ACTIONS.GET_USER, getUser);
+  yield takeEvery(ACTIONS.GET_LOGIN_USER_KEY, getLoginUserKey);
+};
 
 export { UserReducer, UserSaga };

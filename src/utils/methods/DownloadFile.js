@@ -1,5 +1,3 @@
-import fileDownload from "js-file-download";
-import moment from "moment";
 
 const FILE_TYPE = {
   CSV: "csv",
@@ -17,7 +15,7 @@ const DownloadFile = ({
   name = "download",
   type = FILE_TYPE.XLSX,
 }) => {
-  fileDownload(data, `${name}_${moment().format("YYYY-MM-DD")}.${type}`);
+  // fileDownload(data, `${name}_${moment().format("YYYY-MM-DD")}.${type}`);
 };
 
 export { FILE_TYPE, DownloadFile };

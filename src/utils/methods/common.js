@@ -1,6 +1,6 @@
 import { FILE_TYPE, DownloadFile } from './DownloadFile';
 import moment from 'moment';
-import { MOMENT_FORMAT } from 'src/constants/common';
+import { MOMENT_FORMAT } from '../../constants/common';
 
 /**
  * 處理 Table 欄位內容, 並統一當欄位無資料時顯示一槓

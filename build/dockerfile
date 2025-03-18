@@ -1,0 +1,33 @@
+#FROM it-docker.deltaww.com/library/node:14-alpine3.17 as build-stage
+#
+#COPY ./ /app
+#COPY ./.npmrc /root/.npmrc
+#WORKDIR /app/authnz-portal-frontend
+#RUN npm install
+#RUN npm run build
+
+FROM it-docker.deltaww.com/nginx:1.21.5-alpine.itmdev-cache-gzip as production-stage
+COPY ./dist /usr/share/nginx/html
+COPY ./build/default.conf /etc/nginx/conf.d/
+EXPOSE 80
+
+# CMD ["nginx", "-g", "daemon off;"]
+CMD sed -i 's@API_URL_FROM_DOCKER@'"$API_URL"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@API_PROCESS_URL_FROM_DOCKER@'"$API_PROCESS_URL"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@SAM_ADFS_LOGIN_URL_FROM_DOCKER@'"$SAM_ADFS_LOGIN_URL"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@SAM_ADFS_REDIRECT_URL_FROM_DOCKER@'"$SAM_ADFS_REDIRECT_URL"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@SAM_IMAGE_URL_FROM_DOCKER@'"$SAM_IMAGE_URL"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@SMART_IT_DB_WEB_API_URL_FROM_DOCKER@'"$SMART_IT_DB_WEB_API_URL"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@SAM_PORTAL_SPR_FORM_FROM_DOCKER@'"$SAM_PORTAL_SPR_FORM"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@SAM_PORTAL_SPR_VIEW_FROM_DOCKER@'"$SAM_PORTAL_SPR_VIEW"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@SAM_SDP_URL_FROM_DOCKER@'"$SAM_SDP_URL"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@SCCM_TOKEN_FROM_DOCKER@'"$SCCM_TOKEN"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@SMART_IT_TOKEN_FROM_DOCKER@'"$SMART_IT_TOKEN"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@SMART_IT_AUTH_KEY_FROM_DOCKER@'"$SMART_IT_AUTH_KEY"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@SDP_FLOW_CODE_INSTALL_FROM_DOCKER@'"$SDP_FLOW_CODE_INSTALL"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@SDP_FLOW_CODE_UNINSTALL_FROM_DOCKER@'"$SDP_FLOW_CODE_UNINSTALL"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@AUTH_LOGIN_URL_FROM_DOCKER@'"$AUTH_LOGIN_URL"'@g' /usr/share/nginx/html/assets/*.js \
+ && sed -i 's@AUTH_REDIRECT_URL_FROM_DOCKER@'"$AUTH_REDIRECT_URL"'@g' /usr/share/nginx/html/assets/*.js \
+ && exec nginx -g 'daemon off;'
+
+

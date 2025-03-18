@@ -1,48 +1,20 @@
 import axios from "axios";
 import {
   backServerIP,
-  proecssServerIP,
-  rtcPackageID,
-  samLoginUrl,
-  samredirectUrl,
+  processServerIP,
+  rpaLoginUrl,
+  rpaRedirectUrl,
 } from "../Common/common";
 import { store } from "../store";
 import { Actions } from "./constants";
-import ExcelJS from "exceljs";
-import { saveAs } from "file-saver";
 // 轉換 excel 與 csv 用此套件: https://github.com/exceljs/exceljs
 
 export const viewCallback = (el) => (el ? el : "-");
 
 export function exportToCSV(table) {
-  const workbook = new ExcelJS.Workbook();
-  const sheet = workbook.addWorksheet("New Sheet");
-  sheet.addTable(table);
 
-  workbook.csv.writeBuffer().then((data) => {
-    // convert UTF-8 (solution from here: https://stackoverflow.com/questions/6672834/specifying-blob-encoding-in-google-chrome)
-    var BOM = new Uint8Array([0xef, 0xbb, 0xbf]);
-    var blob = new Blob([BOM, data], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
-    saveAs(blob, "output.csv");
-  });
 }
 export function exportToExcel(table) {
-  const workbook = new ExcelJS.Workbook();
-  const sheet = workbook.addWorksheet("New Sheet", {
-    properties: { defaultColWidth: 25 },
-  });
-  sheet.addTable(table);
-  debugger;
-
-  workbook.xlsx.writeBuffer().then((data) => {
-    var blob = new Blob([data], {
-      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-    });
-    debugger;
-    saveAs(blob, "output.xlsx");
-  });
 }
 
 // { id: 'sourceId', label: 'Stock ID', minWidth: 100, viewCallback: (el) => {
@@ -82,7 +54,6 @@ export const generateTable = (allTableHeaders, tableList) => {
     columns: columns,
     rows: rows,
   };
-  debugger;
   return table;
 };
 export const generateTable2 = (allTableHeaders, tableList) => {
@@ -142,7 +113,7 @@ export const getQueryString = (search, name) => {
 
 let axiosInstance = axios.create();
 axiosInstance.interceptors.request.use((res) => {
-  res.headers.common["Authorization"] = `Bearer ${store.getState().user.token}`;
+  res.headers["Authorization"] = `Bearer ${store.getState().user.token}`;
   return res;
 });
 axiosInstance.interceptors.response.use(
@@ -154,20 +125,20 @@ axiosInstance.interceptors.response.use(
     console.log(err);
     if (err.response.status) {
       if (err.response.status >= 500) {
-        window.open(samredirectUrl + "/500", "_self");
+        window.open(rpaRedirectUrl + "/500", "_self");
       } else {
         switch (err.response.status) {
           case 404:
-            // window.open(samredirectUrl + '/404', '_self')
+            // window.open(rpaRedirectUrl + '/404', '_self')
             console.log("404 interceptor handle");
             break;
           case 403:
-            window.open(samredirectUrl + "/403", "_self");
+            window.open(rpaRedirectUrl + "/403", "_self");
             console.log("403 interceptor handle");
             break;
           case 401:
             window.open(
-              `${samLoginUrl}?relayState=${samredirectUrl}/isLogin?nextUrl=${window.location.pathname}`,
+              `${rpaLoginUrl}${rpaRedirectUrl}`,
               "_self"
             );
             break;
@@ -183,7 +154,7 @@ axiosInstance.interceptors.response.use(
 export { axiosInstance as axios };
 
 let callAxios = (method, url, config = {}, data = null, isProcess = false) => {
-  url = isProcess ? proecssServerIP + url : backServerIP + url;
+  url = isProcess ? processServerIP + url : backServerIP + url;
 
   switch (method) {
     case "POST":

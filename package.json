@@ -1,95 +1,55 @@
 {
-    "name": "sam-project",
-    "version": "0.7.3",
-    "private": true,
-    "homepage": "/",
-    "dependencies": {
-        "@ckeditor/ckeditor5-build-classic": "^35.1.0",
-        "@ckeditor/ckeditor5-react": "^5.0.2",
-        "@coreui/coreui": "^3.3.0",
-        "@coreui/icons": "^2.0.1",
-        "@coreui/react": "^3.2.3",
-        "@date-io/date-fns": "^1.3.13",
-        "@emotion/react": "^11.11.4",
-        "@emotion/styled": "^11.11.0",
-        "@mui/icons-material": "^5.15.12",
-        "@mui/lab": "^5.0.0-alpha.167",
-        "@mui/material": "^5.15.12",
-        "@mui/styles": "^5.15.12",
-        "@mui/x-date-pickers": "^6.19.6",
-        "@testing-library/jest-dom": "^4.2.4",
-        "@testing-library/react": "^9.5.0",
-        "axios": "^0.21.0",
-        "babel-loader": "8.1.0",
-        "date-fns": "^2.29.3",
-        "dayjs": "^1.11.10",
-        "env-cmd": "^10.1.0",
-        "exceljs": "^4.3.0",
-        "file-saver": "^2.0.5",
-        "flat": "^5.0.2",
-        "js-file-download": "^0.4.12",
-        "moment": "^2.29.1",
-        "prop-types": "^15.8.1",
-        "react": "18.3.1",
-        "react-autocomplete": "^1.8.1",
-        "react-dom": "^18.0.1",
-        "react-dropzone": "^14.2.3",
-        "react-intl": "^5.20.4",
-        "react-redux": "^7.2.3",
-        "react-required-if": "^1.0.3",
-        "react-router-dom": "^5.2.0",
-        "react-router-last-location": "^2.0.1",
-        "react-scripts": "^5.0.1",
-        "redux": "^4.0.5",
-        "redux-persist": "^6.0.0",
-        "redux-saga": "^1.1.3",
-        "sass": "^1.77.8",
-        "styled-components": "^5.3.0"
-    },
-    "scripts": {
-        "start": "set HTTPS=true&&react-scripts --max-http-header-size=16384 start",
-        "build": "react-scripts build",
-        "build:dev": "env-cmd -f .env.dev npm run build",
-        "build:prod": "env-cmd -f .env.production npm run build",
-        "build:sit": "env-cmd -f .env.sit npm run build",
-        "build:stagging": "env-cmd -f .env.stagging npm run build",
-        "test": "react-scripts test",
-        "eject": "react-scripts eject",
-        "lint": "eslint src"
-    },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "airbnb-base",
-            "eslint:recommended",
-            "plugin:react/recommended"
-        ],
-        "plugins": [
-            "babel"
-        ]
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    },
-    "devDependencies": {
-        "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
-        "@babel/plugin-transform-private-property-in-object": "^7.21.11",
-        "babel-core": "^6.26.3",
-        "babel-eslint": "^10.1.0",
-        "eslint": "^7.24.0",
-        "eslint-config-airbnb": "^18.2.1",
-        "eslint-plugin-babel": "^5.3.1",
-        "webpack": "^5.98.0",
-        "webpack-cli": "^5.1.4",
-        "webpack-dev-server": "^4.15.2"
-    }
+  "name": "rpaportal",
+  "private": true,
+  "version": "1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:https": "cross-env NODE_OPTIONS='--insecure-http-parser' vite --https",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/base": "^5.0.0-beta.69",
+    "@mui/icons-material": "^5.15.12",
+    "@mui/material": "^5.15.12",
+    "@mui/system": "^5.15.12",
+    "@mui/x-date-pickers": "^6.12.0",
+    "@reduxjs/toolkit": "^2.4.0",
+    "axios": "^1.7.9",
+    "date-fns": "^2.30.0",
+    "dayjs": "^1.11.10",
+    "flat": "^6.0.1",
+    "mkcert": "^3.1.0",
+    "moment": "^2.29.1",
+    "prop-types": "^15.8.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-intl": "^7.0.4",
+    "react-redux": "^8.1.3",
+    "react-router-dom": "^7.0.2",
+    "redux": "^4.2.1",
+    "redux-persist": "^6.0.0",
+    "redux-saga": "^1.3.0",
+    "styled-components": "^5.3.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "cross-env": "^7.0.3",
+    "depcheck": "^1.4.7",
+    "eslint": "^9.16.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "globals": "^15.12.0",
+    "prettier": "^3.4.2",
+    "sass-embedded": "^1.82.0",
+    "vite": "^6.0.1"
+  }
 }

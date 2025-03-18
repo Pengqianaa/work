@@ -1,61 +1,72 @@
 import axios from "axios";
-import { Actions, METHOD_TYPE } from "src/constants/common";
+import { Actions, METHOD_TYPE } from "../../constants/common";
+import { ACTIONS as ViewActions } from "../../Reducers/ViewReducer";
 import {
   PROCESS_SERVER_IP,
   BACK_SERVER_IP,
   SAM_REDIRECT_URL,
   SAM_LOGIN_URL,
-} from "src/constants/config";
-import { store } from "src/store";
+} from "../../constants/config";
+import { store } from "../../store";
 
 const axiosInstance = axios.create();
-
-axiosInstance.interceptors.request.use((res) => {
-  res.headers.common["Authorization"] = `Bearer ${store.getState().user.token}`;
-  return res;
+axiosInstance.interceptors.request.use((config) => {
+  config.headers["Authorization"] = ''
+  if (store.getState().user.token) {
+    config.headers["Authorization"] = `Bearer ${store.getState().user.token}`;
+  }
+  // 设置默认的 Content-Type，如果没有指定
+  if (!config.headers["Content-Type"]) {
+    config.headers["Content-Type"] = "application/json"; // 适配你的需求，比如 'application/x-www-form-urlencoded'
+  }
+  return config;
 });
-
 axiosInstance.interceptors.response.use(
   (response) => {
     store.dispatch({ type: Actions.SET_IS_LOADING, payload: false });
     return response;
   },
   (error) => {
-    const { response } = error;
-    const { status } = response;
-    if (status) {
-      let url = "";
-      if (status === 401) {
-        url = `${SAM_LOGIN_URL}?relayState=${SAM_REDIRECT_URL}/isLogin?nextUrl=${window.location.pathname}`;
-      } else if (status === 403 || status === 404 || status >= 500) {
-        url = `${SAM_REDIRECT_URL}/${status}`;
-      } else {
-        throw new Error(`[CallSamApiFunc] ${error}`);
-      }
-
-      if (url) {
-        // 验证URL（这里只是一个非常基本的示例）  
-        try {  
-            new URL(url); // 这将抛出异常，如果url不是一个有效的URL  
-        } catch (e) {  
-            console.error('无效的URL:', url);  
-            return;  
-        }
-        const allowedDomains = [SAM_REDIRECT_URL];  
-        if((url !== null)||(url.length!== 0)){
-            // let redirect = allowedDomains.some(domain => url.startsWith(domain))
-            let redirect = url.includes("deltaww")
-            if(redirect){
-              window.open(url,"_self");
-            }
-          } 
-      }
+    const response = error.response || {}; // 安全处理
+    const status = response.status || "Unknown Status";
+    const message = response.data?.messages || error.message || "Unknown Error";
+    console.error(`Error in response: Status=${status}, Message=${message}`);
+    if (status === 401) {
+      const url = `${SAM_LOGIN_URL}${SAM_REDIRECT_URL}`
+      window.open(url, "_self");
     }
-
+    if (status === 555) {
+      store.dispatch({
+        type: ViewActions.SHOW_SNACKBAR_MESSAGE,
+        payload: {
+          show: true,
+          props: {
+            message: message,
+            msgType: 4,
+            autoHideDuration: null,
+          },
+        },
+      });
+    }
+    if (status === 400) {
+      const detail = response.data.detail
+      store.dispatch({
+        type: ViewActions.SHOW_SNACKBAR_MESSAGE,
+        payload: {
+          show: true,
+          props: {
+            message: detail,
+            msgType: 4,
+            autoHideDuration: null,
+          },
+        },
+      });
+    }
     store.dispatch({ type: Actions.SET_IS_LOADING, payload: false });
-    return Promise.resolve(error);
+    return Promise.reject(error);
   }
 );
+
 
 const callAxios = (
   method,
@@ -64,16 +75,21 @@ const callAxios = (
   data = null,
   isProcess = false
 ) => {
-  const url = `${isProcess ? PROCESS_SERVER_IP : BACK_SERVER_IP}${_url}`;
-
+  // axios
+  //     .get('https://rmp-dev.deltaww.com/api/current-user',config)
+  //     .then(response => (this.info = response))
+  //     .catch(function (error) { // 请求失败处理
+  //       console.log(error);
+  //   });
+  const url = `${isProcess ? PROCESS_SERVER_IP : BACK_SERVER_IP}/${_url.replace(/^\//, "")}`;
   switch (method) {
     case METHOD_TYPE.POST:
       return axiosInstance.post(url, data, config);
     case METHOD_TYPE.GET:
       return axiosInstance.get(url, { params: data, ...config });
     case METHOD_TYPE.DELETE:
-      return axiosInstance.delete(url, { params: data, ...config });
-    case METHOD_TYPE.DELETE:
+      return axiosInstance.delete(url, { data: data, ...config })
+    case METHOD_TYPE.PUT:
       return axiosInstance.put(url, data, config);
     case METHOD_TYPE.PATCH:
       return axiosInstance.patch(url, data, config);
@@ -104,18 +120,15 @@ const CallSamApiFunc = (
   isProcess = false
 ) => {
   return callAxios(method, url, config, data, isProcess)
-    .then(
-      (data) =>
-        new Promise((resolve, reject) => {
-          resolve(data);
-        })
-    )
-    .catch(
-      (error) =>
-        new Promise((resolve) => {
-          resolve(error);
-        })
-    );
+    .then((data) => {
+      // console.log("Response Data:", data);
+      return data;
+    })
+    .catch((error) => {
+      console.error("Error in CallSamApiFunc:", error);
+      return Promise.reject(error); // 确保返回 Promise.reject
+    });
 };
+
 
 export default CallSamApiFunc;

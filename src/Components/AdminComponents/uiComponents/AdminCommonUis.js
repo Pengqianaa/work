@@ -17,11 +17,26 @@ export const LockButton = styled(Button)`
   display: block;
   height: 80%;
 `;
+// TableHeadContainer {
+//   display: flex;
+//   align-items: center; /* 垂直居中對齊 */
+//   justify-content: space-between; /* 或其他需求，如 flex-start, center */
+//   gap: 10px; /* 控制子元素之間的間距 */
+//   padding: 10px; /* 根據需要設置內邊距 */
+// }
+
+// FilterGroup {
+//   display: flex; 
+//   align-items: center;
+//   justify-content: center; 
+// }
 
 export const TableHeadContainer = styled.div`
-  margin: 16px;
-  display: flex;
-  justify-content: space-between;
+ display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  gap: 10px; 
+  padding: 10px; 
 `;
 export const SearchInput = styled.input`
   height: calc(2em + 0.75rem + 2px);
@@ -35,7 +50,6 @@ export const SubmitButton = styled(Button)`
   background-color: #0087dc !important;
   color: #fff !important;
   cursor: pointer !important;
-  display: block;
   height: 80%;
   &.Mui-disabled {
     background-color: #ddd !important;
@@ -72,11 +86,13 @@ export const ImportButton = styled(Button)`
   }
 `;
 export const FilterContainer = styled(FormControl)`
-  min-width: 120px !important;
+  min-width: 140px !important;
   margin-right: 20px !important;
 `;
 export const FilterGroup = styled.div`
-  display: flex;
+   display: flex; 
+  align-items: center;
+  justify-content: center; 
 `;
 export const TabContainer = styled.div`
   width: 100%;

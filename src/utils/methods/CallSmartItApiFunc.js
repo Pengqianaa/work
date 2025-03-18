@@ -1,13 +1,18 @@
 import axios from "axios";
-import { Actions, METHOD_TYPE, STATUS_TYPE } from "src/constants/common";
+import { Actions, METHOD_TYPE, STATUS_TYPE } from "../../constants/common";
 import {
   SMART_IT_DB_WEB_API,
   SAM_REDIRECT_URL,
   SMART_IT_TOKEN,
-} from "src/constants/config";
+} from "../../constants/config";
 import { store } from "../store";
 
 const axiosInstance = axios.create();
+
+axiosInstance.interceptors.request.use((res) => {
+  res.headers["Authorization"] = `Bearer ${store.getState().user.token}`;
+  return res;
+});
 
 axiosInstance.interceptors.response.use(
   (response) => {
@@ -71,7 +76,6 @@ const callAxios = (method, url, _config, data = null) => {
       },
     }),
   };
-
   switch (method) {
     case METHOD_TYPE.POST:
       return axiosInstance.post(callUrl, data, {

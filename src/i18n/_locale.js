@@ -1,4 +1,4 @@
-import flatten from 'flat'
+import {flatten} from 'flat'
 
 import en from './en-US'
 import zh from './zh-TW'

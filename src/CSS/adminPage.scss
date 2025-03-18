@@ -1,0 +1,23 @@
+// PermissionMgt.module.scss
+
+.container {
+    background-color: #f4f6f8; // 浅灰色背景
+    min-height: 100vh; // 全屏高度
+    padding: 32px; // 外边距
+  }
+  
+  .contentBox {
+    background-color: #ffffff; // 白色背景
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); // 阴影
+    padding: 32px; // 内边距
+  }
+  
+  .tableContainer {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); // 阴影
+    overflow: hidden;
+  }
+  
+  .paginationContainer {
+    margin-top: 16px; // 上方间距
+  }
+  

@@ -1,3 +1,95 @@
+/* 基本样式重置 */
+body,
+html,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+/* 容器样式 */
+.c-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.c-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+}
+
+/* Header 样式 */
+.admin-header {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 1em 0;
+  // width: 100%;
+  /* 确保Header占据整个顶部宽度 */
+  box-sizing: border-box;
+  /* 包括padding在内计算宽度 */
+}
+
+/* Sidebar 样式 */
+.the-sidebar {
+  background-color: #444;
+  color: white;
+  width: 200px;
+  /* 根据需要调整宽度 */
+  padding: 1em;
+  box-sizing: border-box;
+}
+
+/* Content 样式 */
+.admin-content {
+  flex: 1;
+  background-color: #f4f4f4;
+  padding: 1em;
+  box-sizing: border-box;
+  overflow-y: auto;
+  /* 如果内容超出可视区域，则显示滚动条 */
+}
+
+.MuiContainer-root{
+  max-width: 1566px;
+}
+
+/* Footer 样式 */
+.the-footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 1em 0;
+  width: 100%;
+  /* 确保Footer占据整个底部宽度 */
+  box-sizing: border-box;
+  // position: sticky;
+  /* 如果希望Footer始终位于底部，即使内容不够多时也如此 */
+  bottom: 0;
+  /* 与position: sticky一起使用，确保Footer贴在底部 */
+}
+
+button.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 4px 8px;
+  color: #00a0e9;
+  min-width: 120px;
+  min-height: 36px;
+
+  &.Mui-selected {
+    background-color: #00a0e9;
+    border-color: #00a0e9;
+    color: #fff;
+  }
+}
+
+/* 注意：如果使用了position: sticky，请确保父容器（在这里是.c-app或.c-wrapper）没有设置overflow属性，或者其overflow值允许粘性定位的元素超出其边界。 */
+
 *:focus {
   outline: none !important;
 }
@@ -35,14 +127,17 @@
     color: #333333;
     background-color: #fff;
   }
+
   tr:nth-child(2n + 1) {
     background-color: #efefef;
   }
+
   tr.MuiTableRow-footer {
     background-color: #fff;
   }
+
   div.MuiTabs-root {
-    min-height: 36px;
+    min-height: 45px !important;
   }
 
   button.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary {
@@ -53,6 +148,7 @@
     color: #00a0e9;
     min-width: 120px;
     min-height: 36px;
+    
 
     &.Mui-selected {
       background-color: #00a0e9;
@@ -62,6 +158,7 @@
   }
 
   .MuiButtonBase-root {
+
     &.MuiIconButton-root,
     &.MuiButton-root,
     &.MuiButton-text,
@@ -79,14 +176,23 @@
     }
   }
 
-  span.MuiTabs-indicator {
-    display: none;
-  }
+  // span.MuiTabs-indicator {
+  //   display: none;
+  // }
+
   .row {
     div.MuiPaper-rounded {
       border-radius: 0;
     }
   }
+}
+
+.MuiPaper-root.MuiPaper-elevation.MuiTableContainer-root {
+  border: 1px solid #e9dddd;
+}
+
+.MuiButtonBase-root.MuiTab-root {
+  top: 10px;
 }
 
 #admin-header {
@@ -110,6 +216,7 @@ a.c-sidebar-nav-link {
   padding-top: 56px;
   position: fixed;
   height: 100%;
+
   .c-sidebar-nav-divider {
     background-color: #ededed;
     height: 1px;
@@ -124,7 +231,8 @@ a.c-sidebar-nav-link {
 }
 
 span.MuiTabs-indicator {
-  background-color: #00a0e9;
+  background-color: #140006;
+  display: none;
 }
 
 textarea.MuiInput-inputMultiline {

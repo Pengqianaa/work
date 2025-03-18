@@ -1,0 +1,106 @@
+# pointer to docker build template
+include:
+  - project: "corp/it/itmfg/mfgsre-gitops-code"
+    ref: master
+    file: "/pipeline/gitlab-ci/ci/.container-build.yml"
+  - project: "corp/it/itmfg/mfgsre-gitops-code"
+    ref: master
+    file: "/pipeline/gitlab-ci/ci/.app-build.yml"
+  - project: "delta-public/delta-ci-template"
+    ref: main
+    file: "/templates/corp-it-itms/kubernetes/.deployment-template.yml"
+
+variables:
+  RPA_PORTAL_FRONTEND: frontend
+  APPS:
+    description: "To build app environment"
+    value: ""
+    options:
+      - ""
+      - "RPA_PORTAL_FRONTEND"
+  DISABLE_PUSH_IMG:
+    description: "disable image to push registry"
+    value: "NO"
+    options:
+      - "NO"
+      - "YES"
+
+workflow:
+  name: "[$DEPLOY_APP][$CI_PIPELINE_SOURCE][$CI_COMMIT_MESSAGE]"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"    # 依據合併的條件決定觸發的條件，修改 DEPLOY_APP 變數
+      variables:
+        DEPLOY_APP: "RPA_PORTAL"                                                         # 設定 DEPLOY_APP 變數為觸發的系統名稱
+      changes:
+        - src/**/*
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      variables:
+        DEPLOY_APP: ""
+      changes:
+        - src/**/*
+    - if: $APPS =~ /RPA_PORTAL_FRONTEND/
+      variables:
+        DEPLOY_APP: "RPA_PORTAL"                                                             # 設定 DEPLOY_APP 變數為觸發的系統名稱
+    - if: '$CI_COMMIT_TAG !~ "/^$/"'
+      variables:
+        DEPLOY_APP: "RPA_PORTAL"
+        TAG_VERSION: "$CI_COMMIT_TAG"
+
+TRIGGER_RPA_PORTAL:
+  extends: .update_images_template                                         # 此 template pipeline 用於更新 image 到 對應的系統 manifest repo 上
+  variables:
+    PROJECT_PATH: "corp/it/ITEA/rpaportal/deployment"        # 設定 manifest pipeline repo
+    PROJECT_BRANCH: "main"                                                  # 設定觸發的 branch
+    PARENT_ARTIFACT_JOBS: "IMAGE_RPA_PORTAL_FRONTEND" # "IMAGE_RPA_PORTAL_FRONTEND;IMAGE_RPA_PORTAL_BACKEND"
+    PIPELINE_TITLE: "RPA_PORTAL"
+
+# --------------- frontend -------------------------- #
+COMPILE_RPA_PORTAL_FRONTEND:
+  extends: .js-npm-build
+  variables:
+    COMPILE_IMAGE: "it-docker.deltaww.com/library/node:20-alpine3.18"
+    APP_LANG: "JS"
+    APP_PROJECT_PATH: ""
+    APP_OUTPUT_PATH: "./dist"
+    IS_LEGACY_CONFIG: "YES"
+    APP_NPM_INSTALL_CMD: ""
+    APP_INSTALL_CMD: "npm install --legacy-peer-deps"
+    APP_BUILD_CMD: "npm run build"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"
+      changes:
+        - src/**/*
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      changes:
+        - src/**/*
+    - if: $APPS =~ /RPA_PORTAL_FRONTEND/
+    - if: '$CI_COMMIT_TAG !~ "/^$/"'
+      variables:
+        TAG_VERSION: "$CI_COMMIT_TAG"
+
+IMAGE_RPA_PORTAL_FRONTEND:
+  extends: .container-build
+  variables:
+    IMG_NAME: frontend
+    APP_PROJECT_PATH: ""
+    APP_OUTPUT_PATH: "./dist"
+    IMG_SUBPATH: "corp-it-itea/rpa/frontend"
+#    MANIFEST_CLUSTER_STAGES: "dev;qas;prd"
+#    MANIFEST_SYSTEM: ""
+#    DEPLOY_TYPE: "YAML"
+#    DEPLOY_FILE: "authnz-mgmt-frontend-deployment.yaml"
+  needs: ['COMPILE_RPA_PORTAL_FRONTEND']
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH && $CI_PIPELINE_SOURCE == "push"
+      changes:
+        - src/**/*
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      variables:
+        DISABLE_PUSH_IMG: "YES"
+      changes:
+        - src/**/*
+    - if: $APPS =~ /RPA_PORTAL_FRONTEND/
+    - if: '$CI_COMMIT_TAG !~ "/^$/"'
+      variables:
+        TAG_VERSION: "$CI_COMMIT_TAG"
+
