@@ -1,0 +1,158 @@
+text {
+  font-family: Arial;
+  font-size: 18px;
+}
+.node {
+  stroke-linecap: round;
+}
+.link {
+  fill: none;
+}
+
+.test-div {
+  border-style: solid;
+  border-color: red green blue yellow; /* red top, green right, blue bottom and yellow left */
+}
+
+/*common*/
+.profileLink {
+  color: rgba(21, 1, 0, 0.5);
+}
+.profileLink:hover,
+.profileLink:active {
+  color: #666;
+}
+
+/*header profile*/
+#profileMenu {
+  width: 300px;
+  height: auto;
+  z-index: 1000;
+}
+
+/*Search Page*/
+.catlogBoard {
+  font-size: 20px;
+  .catlogIcon {
+    height: 80px;
+    margin: -10px 0px 25px 110px;
+    color: #efefef;
+  }
+  .text-value-lg,
+  .text-value {
+    font-size: 28px;
+  }
+}
+
+.searchItem a.h3 {
+  color: #000;
+}
+.searchItem a.h3:hover,
+.searchItem a.h3:active {
+  color: rgb(2, 45, 85);
+  font-weight: 700;
+}
+
+/*Search Page-END*/
+
+/*detail page & workFlow*/
+.card {
+  .cardHeader {
+    background-color: #0f5392;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 5px 5px 0px 0px;
+    padding: 8px 0px 8px 20px;
+  }
+
+  .swImg {
+    padding: 10px;
+  }
+
+  .subTitle,
+  .swAttriTitle {
+    font-size: 17px;
+    height: 30;
+    padding: 5px 2px;
+  }
+
+  .swAttriTitle {
+    border-bottom: 1px solid #666;
+  }
+
+  .swVal {
+    font-size: 15px;
+    padding: 0 2px;
+  }
+
+  #leftMenu {
+    display: block;
+    min-height: 320px;
+
+    .cart {
+      padding: 0;
+      margin: -10px 0px;
+
+      .cartItem {
+        background-color: #39f;
+        border-radius: 0;
+        margin: 5px 0px;
+        height: 70px;
+
+        .count {
+          padding: 0px 20px;
+        }
+      }
+
+      .cartItemCount {
+        color: #fff;
+      }
+
+      .img {
+        padding: 5px 20px;
+      }
+    }
+
+    .cartCon {
+      min-height: 200px;
+    }
+
+    .cartTitle {
+      font-size: 17px;
+      height: 30;
+      padding: 20px 5px 10px 0px;
+      margin: 0px -10px;
+    }
+
+    #cartAction {
+      text-align: right;
+      padding: 0;
+    }
+  }
+
+  #swDescr {
+    min-height: auto;
+  }
+}
+
+.workflowJumbotron {
+  background-color: #fff;
+  border: 1px solid #efefef;
+  min-height: 385px;
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.alertMsg {
+  color: red;
+  display: none;
+}
+
+.MuiTablePagination-selectLabel {
+  margin-top: 1rem !important;
+}
+.MuiTablePagination-displayedRows {
+  margin-top: 1rem !important;
+}
+/*detail page & workFlow END*/
