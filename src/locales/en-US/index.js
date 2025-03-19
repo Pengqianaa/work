@@ -12,7 +12,16 @@ export default {
     delete: 'Delete',
     edit: 'Edit',
     save: 'Save',
-    loading: 'Loading...'
+    loading: 'Loading...',
+    title: 'Software Asset Management',
+    adminPanel: 'Admin Panel',
+    backToHome: 'Back to Home',
+    name: 'Name',
+    email: 'Email',
+    phone: 'Phone',
+    location: 'Location',
+    role: 'Role',
+    switchUser: 'Switch User'
   },
   menu: {
     dashboard: 'Dashboard',

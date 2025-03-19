@@ -3,6 +3,8 @@ import { initReactI18next } from 'react-i18next'
 import enUS from './en-US'
 import zhCN from './zh-CN'
 
+const savedLanguage = localStorage.getItem('language')
+
 i18n
   .use(initReactI18next)
   .init({
@@ -14,10 +16,16 @@ i18n
         translation: zhCN
       }
     },
-    lng: localStorage.getItem('language') || 'en',
+    lng: savedLanguage || 'en',
     fallbackLng: 'en',
     interpolation: {
       escapeValue: false
+    },
+    detection: {
+      order: ['localStorage', 'navigator'],
+    },
+    react: {
+      useSuspense: true
     }
   })
 

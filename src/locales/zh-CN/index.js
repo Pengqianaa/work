@@ -12,7 +12,16 @@ export default {
     delete: '删除',
     edit: '编辑',
     save: '保存',
-    loading: '加载中...'
+    loading: '加载中...',
+    title: '软件资产管理',
+    adminPanel: '管理面板',
+    backToHome: '返回首页',
+    name: '姓名',
+    email: '邮箱',
+    phone: '电话',
+    location: '位置',
+    role: '角色',
+    switchUser: '切换用户'
   },
   menu: {
     dashboard: '仪表盘',

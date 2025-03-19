@@ -3,15 +3,16 @@ import {
   AppBar, 
   Toolbar, 
   Typography, 
-  Box, 
-  Button 
+  Box
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import UserMenu from './UserMenu'
 import LanguageSwitch from '../../common/LanguageSwitch'
 
 const Header = () => {
   const navigate = useNavigate()
+  const { t } = useTranslation()
 
   return (
     <AppBar position="static">
@@ -24,15 +25,9 @@ const Header = () => {
           }}
           onClick={() => navigate('/')}
         >
-          Software Asset Management
+          {t('common.title')}
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          <Button 
-            color="inherit"
-            onClick={() => navigate('/admin')}
-          >
-            Admin Panel
-          </Button>
           <LanguageSwitch />
           <UserMenu />
         </Box>
