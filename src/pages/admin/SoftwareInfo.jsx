@@ -1,0 +1,10 @@
+import React from 'react'
+import { Typography } from '@mui/material'
+
+const SoftwareInfo = () => {
+  return (
+    <Typography variant="h4">Software Info Page</Typography>
+  )
+}
+
+export default SoftwareInfo 
