@@ -1,0 +1,143 @@
+*:focus {
+  outline: none !important;
+}
+
+.admin-body {
+  margin-left: 256px;
+  padding-top: 70px;
+  padding-bottom: 50px;
+  height: 100%;
+  display: flex;
+  overflow: auto;
+
+  .search-ui-container {
+    overflow: hidden;
+  }
+
+  .MuiTable-root {
+    padding: 4px 8px;
+    font-size: 12px;
+    border: none;
+  }
+
+  .MuiTableCell-root {
+    // padding: 0.8rem 0.6rem;
+    padding: 6px 8px;
+    font-size: 12px;
+    // max-width: 250px;
+    word-wrap: break-word;
+    border-top: 1px solid #b0b6ba;
+    border-bottom: 1px solid #b0b6ba;
+  }
+
+  th {
+    font-weight: bold;
+    color: #333333;
+    background-color: #fff;
+  }
+  tr:nth-child(2n + 1) {
+    background-color: #efefef;
+  }
+  tr.MuiTableRow-footer {
+    background-color: #fff;
+  }
+  div.MuiTabs-root {
+    min-height: 36px;
+  }
+
+  button.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary {
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 0.5rem 0.5rem 0 0;
+    padding: 4px 8px;
+    color: #00a0e9;
+    min-width: 120px;
+    min-height: 36px;
+
+    &.Mui-selected {
+      background-color: #00a0e9;
+      border-color: #00a0e9;
+      color: #fff;
+    }
+  }
+
+  .MuiButtonBase-root {
+    &.MuiIconButton-root,
+    &.MuiButton-root,
+    &.MuiButton-text,
+    &.MuiTab-root,
+    &.MuiPaginationItem-root {
+      &:focus {
+        outline: none !important;
+      }
+    }
+
+    .MuiSvgIcon-root {
+      &:focus {
+        outline: none !important;
+      }
+    }
+  }
+
+  span.MuiTabs-indicator {
+    display: none;
+  }
+  .row {
+    div.MuiPaper-rounded {
+      border-radius: 0;
+    }
+  }
+}
+
+#admin-header {
+  z-index: 1031;
+  position: fixed;
+  border-bottom: 0;
+}
+
+a.c-sidebar-nav-link {
+  svg.c-icon {
+    flex: 0 0 56px;
+    height: 1.09375rem;
+    font-size: 1.09375rem;
+    text-align: center;
+    transition: 0.3s;
+    fill: currentColor;
+  }
+}
+
+#admin-sidebar {
+  padding-top: 56px;
+  position: fixed;
+  height: 100%;
+  .c-sidebar-nav-divider {
+    background-color: #ededed;
+    height: 1px;
+    margin: 10px 4px;
+  }
+}
+
+#admin-footer {
+  background-color: #b0b6ba;
+  border-color: rgba(255, 255, 255, 0);
+  padding-left: 256px;
+}
+
+span.MuiTabs-indicator {
+  background-color: #00a0e9;
+}
+
+textarea.MuiInput-inputMultiline {
+  min-height: 20px;
+}
+
+// TODO: 方法1
+// .MuiButtonBase-root.Mui-checked.Mui-disabled {
+//   .MuiSwitch-thumb {
+//     background-color: #97a0d3;
+//   }
+//   + .MuiSwitch-track {
+//     background-color: #3d4259;
+//     // #7f88b5
+//   }
+// }
