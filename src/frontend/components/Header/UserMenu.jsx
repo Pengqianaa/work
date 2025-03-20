@@ -19,7 +19,7 @@ import {
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useAuth } from '../../../hooks/useAuth'
+import { useAuth } from '../../../common/hooks/useAuth'
 
 const UserMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null)
@@ -56,15 +56,15 @@ const UserMenu = () => {
       icon: <SettingsIcon fontSize="small" />,
       onClick: () => handleNavigate('/account')
     },
-    {
-      text: t('common.switchUser'),
-      icon: <SwitchAccountIcon fontSize="small" />,
-      onClick: () => handleNavigate('/login')
-    },
+    // {
+    //   text: t('common.switchUser'),
+    //   icon: <SwitchAccountIcon fontSize="small" />,
+    //   onClick: () => handleNavigate('/login')
+    // },
     {
       text: t('common.adminPanel'),
       icon: <AdminIcon fontSize="small" />,
-      onClick: () => handleNavigate('/admin')
+      onClick: () => handleNavigate('/admin/profile')
     },
     {
       divider: true

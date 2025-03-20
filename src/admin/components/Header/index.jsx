@@ -9,7 +9,7 @@ import {
   Notifications as NotificationsIcon
 } from '@mui/icons-material'
 import UserMenu from './UserMenu'
-import LanguageSwitch from '../../common/LanguageSwitch'
+import LanguageSwitch from '../../../common/components/LanguageSwitch'
 
 const Header = () => {
   return (

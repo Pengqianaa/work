@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react'
 import { Box, Container, CssBaseline } from '@mui/material'
-import Header from '../../components/admin/Header'
-import Sidebar from '../../components/admin/Sidebar'
-import Footer from '../../components/admin/Footer'
-import LoadingSpinner from '../../components/common/LoadingSpinner'
+import Header from '../../components/Header'
+import Sidebar from '../../components/Sidebar'
+import Footer from '../../components/Footer/'
+import LoadingSpinner from '../../../common/components/LoadingSpinner'
 
 const AdminLayout = ({ children }) => {
   return (

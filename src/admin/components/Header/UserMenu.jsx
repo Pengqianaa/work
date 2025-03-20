@@ -17,7 +17,7 @@ import {
   Home as HomeIcon,
   SwitchAccount as SwitchAccountIcon
 } from '@mui/icons-material'
-import { useAuth } from '../../../hooks/useAuth'
+import { useAuth } from '../../../common/hooks/useAuth'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 
@@ -56,11 +56,11 @@ const UserMenu = () => {
       icon: <SettingsIcon fontSize="small" />,
       onClick: () => handleNavigate('/admin/account')
     },
-    {
-      text: t('common.switchUser'),
-      icon: <SwitchAccountIcon fontSize="small" />,
-      onClick: () => handleNavigate('/login')
-    },
+    // {
+    //   text: t('common.switchUser'),
+    //   icon: <SwitchAccountIcon fontSize="small" />,
+    //   onClick: () => handleNavigate('/login')
+    // },
     {
       text: t('common.backToHome'),
       icon: <HomeIcon fontSize="small" />,

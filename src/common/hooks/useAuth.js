@@ -22,22 +22,22 @@ export const useAuth = () => {
     }
   }, [user])
 
-  const login = useCallback(async (credentials) => {
-    setLoading(true)
-    try {
-      // 实现登录逻辑
-      setUser(defaultUser)
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+  // const login = useCallback(async (credentials) => {
+  //   setLoading(true)
+  //   try {
+  //     // 实现登录逻辑
+  //     setUser(defaultUser)
+  //   } catch (error) {
+  //     console.error(error)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }, [])
 
   const logout = useCallback(() => {
     setUser(null)
     localStorage.removeItem(STORAGE_KEYS.USER)
   }, [])
 
-  return { user, loading, login, logout }
+  return { user, loading, logout }
 } 

@@ -8,7 +8,7 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import UserMenu from './UserMenu'
-import LanguageSwitch from '../../common/LanguageSwitch'
+import LanguageSwitch from '../../../common/components/LanguageSwitch'
 
 const Header = () => {
   const navigate = useNavigate()

@@ -18,7 +18,7 @@ import {
   LocationOn as LocationIcon,
   Work as WorkIcon
 } from '@mui/icons-material'
-import { useAuth } from '../../hooks/useAuth'
+import { useAuth } from '../../common/hooks/useAuth'
 import { useTranslation } from 'react-i18next'
 
 const Profile = () => {

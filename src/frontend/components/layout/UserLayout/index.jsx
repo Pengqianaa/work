@@ -1,8 +1,8 @@
 import React, { Suspense } from 'react'
 import { Box, Container } from '@mui/material'
-import Header from '../../components/user/Header'
-import Footer from '../../components/user/Footer'
-import LoadingSpinner from '../../components/common/LoadingSpinner'
+import Header from '../../Header'
+import Footer from '../../Footer'
+import LoadingSpinner from '../../../../common/components/LoadingSpinner'
 
 const UserLayout = ({ children }) => {
   return (
