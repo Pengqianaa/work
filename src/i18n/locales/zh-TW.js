@@ -1,0 +1,42 @@
+export default {
+  common: {
+    loading: '載入中...',
+    error: '發生錯誤',
+    success: '操作成功',
+    confirm: '確認',
+    cancel: '取消',
+    save: '保存',
+    delete: '刪除',
+    edit: '編輯',
+    search: '搜索',
+    noData: '暫無數據',
+  },
+  admin: {
+    dashboard: '儀表板',
+    users: '用戶管理',
+    settings: '系統設置',
+    logout: '退出登錄',
+    profile: '個人資料',
+  },
+  frontend: {
+    home: '首頁',
+    about: '關於我們',
+    contact: '聯繫我們',
+    products: '產品列表',
+    services: '服務項目',
+  },
+  auth: {
+    login: '登錄',
+    register: '註冊',
+    email: '電子郵件',
+    password: '密碼',
+    forgotPassword: '忘記密碼？',
+    rememberMe: '記住我',
+  },
+  validation: {
+    required: '此項為必填',
+    email: '請輸入有效的電子郵件地址',
+    minLength: '長度不能小於 {{min}} 個字符',
+    maxLength: '長度不能超過 {{max}} 個字符',
+  },
+}; 

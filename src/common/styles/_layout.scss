@@ -1,0 +1,90 @@
+@import 'variables';
+@import 'mixins';
+
+// Grid system
+.grid {
+  display: grid;
+  gap: $spacing-md;
+}
+
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+// Responsive grid
+@include respond-to(sm) {
+  .grid-2-sm { grid-template-columns: repeat(2, 1fr); }
+  .grid-3-sm { grid-template-columns: repeat(3, 1fr); }
+  .grid-4-sm { grid-template-columns: repeat(4, 1fr); }
+}
+
+@include respond-to(md) {
+  .grid-2-md { grid-template-columns: repeat(2, 1fr); }
+  .grid-3-md { grid-template-columns: repeat(3, 1fr); }
+  .grid-4-md { grid-template-columns: repeat(4, 1fr); }
+}
+
+// Layout containers
+.page-container {
+  min-height: 100vh;
+  @include flex(column);
+}
+
+.main-content {
+  flex: 1;
+  padding: $spacing-lg;
+}
+
+// Sidebar
+.sidebar {
+  width: 250px;
+  background-color: #fff;
+  @include box-shadow(1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: $z-index-drawer;
+  @include transition(transform);
+}
+
+// Header
+.header {
+  height: 64px;
+  background-color: #fff;
+  @include box-shadow(1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $z-index-drawer - 1;
+  @include flex(row, space-between, center);
+  padding: 0 $spacing-lg;
+}
+
+// Footer
+.footer {
+  background-color: #fff;
+  padding: $spacing-lg;
+  @include box-shadow(1);
+  margin-top: auto;
+}
+
+// Card
+.card {
+  background-color: #fff;
+  border-radius: 4px;
+  @include box-shadow(1);
+  padding: $spacing-lg;
+  margin-bottom: $spacing-lg;
+}
+
+// Section
+.section {
+  margin-bottom: $spacing-xl;
+  
+  &-title {
+    margin-bottom: $spacing-lg;
+    color: #333;
+  }
+} 
