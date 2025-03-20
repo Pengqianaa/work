@@ -1,6 +1,6 @@
 import React from 'react'
 
-// const Dashboard = React.lazy(() => import('../'))
+const PermissionManagement = React.lazy(() => import('../../pages/admin/PermissionMgt/index.jsx'))
 // const Freeware = React.lazy(() => import('../pages/admin/Freeware'))
 // const EFormQuery = React.lazy(() => import('../pages/admin/EFormQuery'))
 // const SWCollection = React.lazy(() => import('../pages/admin/SWCollection'))
@@ -26,12 +26,12 @@ const adminRoutes = [
   //   component: EFormQuery,
   //   icon: 'Description'
   // },
-  // { 
-  //   path: '/admin/swcollection', 
-  //   name: 'SW Collection', 
-  //   component: SWCollection,
-  //   icon: 'Folder'
-  // },
+  { 
+    path: '/admin/permissions', 
+    name: 'permissions', 
+    component: PermissionManagement,
+    icon: 'Folder'
+  },
   { 
     path: '/admin/Profile', 
     name: 'Software Info', 

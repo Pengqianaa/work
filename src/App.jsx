@@ -40,8 +40,8 @@ const App = () => {
           ))}
 
           {/* Default redirect */}
-          <Route path="/" element={<Navigate to="/admin" replace />} />
-          <Route path="/admin" element={<Navigate to="/admin/" replace />} />
+          <Route path="/" element={<Navigate to="/permissions" replace />} />
+          <Route path="/permissions" element={<Navigate to="/permissions/" replace />} />
           
           {/* 404 page */}
           <Route
