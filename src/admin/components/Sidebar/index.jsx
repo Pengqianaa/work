@@ -65,55 +65,72 @@ const Sidebar = () => {
           boxSizing: 'border-box',
           backgroundColor: '#3c4b64',
           color: 'white',
-          borderRight: 'none'
+          borderRight: 'none',
+          overflow: 'visible'
         },
       }}
     >
       <Box sx={{ 
-        p: 2, 
         height: '64px',
         display: 'flex',
         alignItems: 'center',
-        borderBottom: '1px solid rgba(255,255,255,0.1)'
+        borderBottom: '1px solid rgba(255,255,255,0.1)',
+        backgroundColor: '#1976d2',
+        width: '100%',
+        position: 'relative',
+        zIndex: 1200
       }}>
-        <Typography variant="h6" component="div">
-          {t('admin.title')}
+        <Typography variant="h6" component="div" sx={{ 
+          cursor: 'pointer',
+          fontSize: '1.25rem',
+          fontWeight: 500,
+          whiteSpace: 'nowrap',
+          px: 3
+        }}>
+          Software Asset Management
         </Typography>
       </Box>
       <List sx={{ pt: 0 }}>
-        {menuItems.map((item) => (
-          <ListItem 
-            button 
-            key={item.text}
-            onClick={() => navigate(item.path)}
-            selected={location.pathname === item.path}
-            sx={{
-              py: 1.5,
-              px: 3,
-              '&.Mui-selected': {
-                backgroundColor: 'rgba(255,255,255,0.1)',
+        {menuItems.map((item, index) => (
+          <React.Fragment key={item.text}>
+            <ListItem 
+              button 
+              onClick={() => navigate(item.path)}
+              selected={location.pathname === item.path}
+              sx={{
+                py: 1.5,
+                px: 3,
+                '&.Mui-selected': {
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  '&:hover': {
+                    backgroundColor: 'rgba(255,255,255,0.2)',
+                  }
+                },
                 '&:hover': {
-                  backgroundColor: 'rgba(255,255,255,0.2)',
+                  backgroundColor: 'rgba(255,255,255,0.1)',
                 }
-              },
-              '&:hover': {
-                backgroundColor: 'rgba(255,255,255,0.1)',
-              }
-            }}
-          >
-            <ListItemIcon sx={{ 
-              color: 'white',
-              minWidth: 40
-            }}>
-              {item.icon}
-            </ListItemIcon>
-            <ListItemText 
-              primary={item.text}
-              primaryTypographyProps={{
-                fontSize: '0.875rem'
               }}
-            />
-          </ListItem>
+            >
+              <ListItemIcon sx={{ 
+                color: 'white',
+                minWidth: 40
+              }}>
+                {item.icon}
+              </ListItemIcon>
+              <ListItemText 
+                primary={item.text}
+                primaryTypographyProps={{
+                  fontSize: '0.875rem'
+                }}
+              />
+            </ListItem>
+            {index === 0 && (
+              <Divider sx={{ 
+                backgroundColor: 'rgba(255,255,255,0.6)',
+                my: 1
+              }} />
+            )}
+          </React.Fragment>
         ))}
       </List>
     </Drawer>

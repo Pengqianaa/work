@@ -6,20 +6,26 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
-  Divider
+  Divider,
+  Box,
+  Typography
 } from '@mui/material'
 import {
   Person as PersonIcon,
   Settings as SettingsIcon,
-  ExitToApp as LogoutIcon
+  ExitToApp as LogoutIcon,
+  Home as HomeIcon,
+  SwitchAccount as SwitchAccountIcon
 } from '@mui/icons-material'
 import { useAuth } from '../../../hooks/useAuth'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 const UserMenu = () => {
   const [anchorEl, setAnchorEl] = useState(null)
-  const { logout } = useAuth()
+  const { logout, user } = useAuth()
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget)
@@ -34,16 +40,31 @@ const UserMenu = () => {
     handleClose()
   }
 
+  const handleNavigate = (path) => {
+    navigate(path)
+    handleClose()
+  }
+
   const menuItems = [
     {
       text: t('common.profile'),
       icon: <PersonIcon fontSize="small" />,
-      onClick: handleClose
+      onClick: () => handleNavigate('/admin/profile')
     },
     {
-      text: t('common.settings'),
+      text: t('common.myAccount'),
       icon: <SettingsIcon fontSize="small" />,
-      onClick: handleClose
+      onClick: () => handleNavigate('/admin/account')
+    },
+    {
+      text: t('common.switchUser'),
+      icon: <SwitchAccountIcon fontSize="small" />,
+      onClick: () => handleNavigate('/login')
+    },
+    {
+      text: t('common.backToHome'),
+      icon: <HomeIcon fontSize="small" />,
+      onClick: () => handleNavigate('/')
     },
     {
       divider: true
@@ -57,22 +78,36 @@ const UserMenu = () => {
 
   return (
     <>
-      <IconButton
+      <Box 
+        sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: 1,
+          cursor: 'pointer',
+          ml: 1,
+          '&:hover': { 
+            opacity: 0.8 
+          }
+        }}
         onClick={handleMenu}
-        color="inherit"
-        size="small"
-        sx={{ ml: 2 }}
       >
         <Avatar 
           sx={{ 
             width: 32, 
             height: 32,
-            bgcolor: 'primary.main'
+            bgcolor: 'transparent',
+            color: 'inherit'
           }}
         >
-          A
+          <PersonIcon sx={{ width: 20, height: 20 }} />
         </Avatar>
-      </IconButton>
+        <Typography 
+          color="inherit" 
+          variant="body2"
+        >
+          {user?.name || 'User'}
+        </Typography>
+      </Box>
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -92,8 +127,8 @@ const UserMenu = () => {
             },
           },
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: 'left', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'left', vertical: 'bottom' }}
       >
         {menuItems.map((item, index) => (
           item.divider ? (

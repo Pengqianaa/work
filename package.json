@@ -12,6 +12,7 @@
     "test": "vitest"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@emotion/react": "^11.11.0",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.11.16",
@@ -24,6 +25,21 @@
     "react-router-dom": "^6.11.1",
     "react-query": "^3.39.3",
     "zustand": "^4.3.8"
+=======
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/icons-material": "^5.11.11",
+    "@mui/material": "^5.11.11",
+    "axios": "^1.3.4",
+    "i18next": "^22.4.10",
+    "moment": "^2.30.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^12.2.0",
+    "react-query": "^3.39.3",
+    "react-router-dom": "^6.8.2",
+    "zustand": "^4.3.6"
+>>>>>>> 86d8959c21052b8db81614523fa3c5caf5cbf48a
   },
   "devDependencies": {
     "@types/react": "^18.2.6",
@@ -38,4 +54,4 @@
   "engines": {
     "node": ">=14.0.0"
   }
-} 
+}

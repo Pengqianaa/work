@@ -3,7 +3,6 @@ import {
   IconButton, 
   Menu, 
   MenuItem, 
-  ListItemIcon, 
   ListItemText 
 } from '@mui/material'
 import { Language as LanguageIcon } from '@mui/icons-material'
@@ -26,21 +25,38 @@ const LanguageSwitch = () => {
     setAnchorEl(null)
   }
 
-  const changeLanguage = (code) => {
-    i18n.changeLanguage(code)
-    localStorage.setItem('language', code)
-    handleClose()
+  const changeLanguage = async (code) => {
+    try {
+      await i18n.changeLanguage(code)
+      localStorage.setItem('language', code)
+      document.documentElement.lang = code
+      handleClose()
+    } catch (error) {
+      console.error('Failed to change language:', error)
+    }
   }
 
   return (
     <>
-      <IconButton color="inherit" onClick={handleClick}>
-        <LanguageIcon />
+      <IconButton 
+        color="inherit" 
+        onClick={handleClick}
+        size="small"
+      >
+        <LanguageIcon fontSize="small" />
       </IconButton>
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleClose}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
+          },
+        }}
       >
         {languages.map((lang) => (
           <MenuItem
