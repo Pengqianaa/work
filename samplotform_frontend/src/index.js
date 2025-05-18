@@ -1,3 +1,4 @@
+import 'process/browser';
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
